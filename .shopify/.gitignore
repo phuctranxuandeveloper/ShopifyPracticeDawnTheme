@@ -1,0 +1,11 @@
+# Ignore the entire .shopify directory
+.denv.env
+.shopify/.env
+.shopify/.env.local
+.shopify/.env.*.local
+.shopify/.cache
+.shopify/dist
+.shopify/node_modules
+.shopify/.next
+.shopify/.turbo
+.shopify/.vercel        
