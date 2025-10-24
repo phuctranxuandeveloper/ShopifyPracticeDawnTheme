@@ -1,0 +1,32 @@
+	
+<div>
+	<h2>{{ section.settings.pre-order-title }}</h2>
+
+	The new {{ collection.title }} is out now! {{ section.settings.pre-order-text }}
+</div>										  
+{% schema %}
+{
+"name": "Call to action",
+"settings": [
+	{
+	"id": "pre-order-title",
+	"type": "text",
+	"label": "Title",
+	"default": "Pre-order now!"
+	},
+	{
+	"id": "pre-order-text",
+	"type": "textarea",
+	"label": "Text",
+	"default": "Enter text here"
+	}
+]
+,
+"presets": [
+	{
+	"name": "Call to Action",
+	"category": "Promotional"
+	}
+]
+}
+{% endschema %}
