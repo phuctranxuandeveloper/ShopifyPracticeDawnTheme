@@ -326,10 +326,6 @@
   .footer-block:only-child li {
     display: inline;
   }
-
-  .footer-block__details-content > li:not(:last-child) {
-    margin-right: 1.5rem;
-  }
 }
 
 .footer-block__details-content .list-menu__item--link,
@@ -387,7 +383,7 @@
   }
 
   .footer__localization h2 {
-    display: none; 
+    display: none;
   }
 
   .footer__localization button[class*="localization-form__select"] {
@@ -400,7 +396,7 @@
   }
 
   .footer__currency {
-    color: #FFFFFF
+    color: #ffffff;
   }
 
   .footer__localization {
@@ -516,6 +512,89 @@
 .policies li a {
   padding: 0.6rem 0;
   display: block;
+}
+
+@media screen and (min-width: 990px) {
+  .footer__content-top {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  .footer__blocks-wrapper {
+    flex: 2;
+    gap: 12px;
+  }
+
+  .footer__logo-and-social {
+    flex: 1;
+    width: 400px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .footer-block__title_menu {
+    display: none;
+  }
+
+  .grid {
+    flex-wrap: nowrap;
+  }
+
+  .footer__logo {
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: 8px;
+  }
+
+  .list-menu__item {
+    font-weight: 600;
+  }
+
+  .footer__content-bottom {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .footer__content-bottom .first-wrapper {
+    flex-direction: column;
+  }
+
+  .footer__content-bottom .second-wrapper {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .footer__content-bottom-wrapper:not(.footer__content-bottom-wrapper--center)
+    .footer__copyright {
+    text-align: left;
+  }
+
+  .footer__column--info {
+    align-items: flex-start;
+  }
+
+  .footer__localization {
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .footer__localization span {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .footer__currency {
+    color: #ffffff;
+  }
+
+  .footer__copyright small {
+    font-size: 13px;
+    color: #ffffff;
+  }
 }
 
 @media screen and (min-width: 750px) {
