@@ -10,12 +10,12 @@
   display: inline-flex;
   flex-wrap: wrap;
   flex: initial;
-  padding: 1rem 0;
+  padding: 0;
 }
 
 .localization-form:only-child .button,
 .localization-form:only-child .localization-form__select {
-  margin: 1rem 1rem 0.5rem;
+  margin: 0;
   flex-grow: 1;
 }
 
