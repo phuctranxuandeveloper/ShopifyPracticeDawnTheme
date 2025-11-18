@@ -1,0 +1,250 @@
+{% comment %}
+  Product Recommendations Section
+{% endcomment %}
+
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'section-product-recommendations.css' | asset_url | stylesheet_tag }}
+
+<div class="product-recommendations page-width section-{{ section.id }}-padding">
+  <div class="product-recommendations-{{ section.id }}">
+    <product-suggest-viewed
+      data-section-id="{{ section.id }}"
+      data-product-id="{{ product.id }}"
+      data-max-to-show="{{ section.settings.products_to_show }}"
+    >
+      {% if section.settings.heading != blank %}
+        <h2 class="product-recommendations__heading {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+      {%- if section.settings.description != blank -%}
+        <div class="description {{ section.settings.description_style }} rte {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in {% endif %}">
+          {{ section.settings.description | escape -}}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_type_selector -%}
+        <div class="product-recommendations__tabs">
+          <button
+            class="tab-button active"
+            data-tab="related"
+            aria-pressed="true"
+            id="related-product-btn-{{ section.id }}"
+          >
+            {{ section.settings.related_label }}
+          </button>
+          <button
+            class="tab-button"
+            data-tab="viewed"
+            aria-pressed="false"
+            id="viewed-product-btn-{{ section.id }}"
+          >
+            {{ section.settings.viewed_label }}
+          </button>
+        </div>
+      {%- endif -%}
+      <product-relate id="related-products-{{ section.id }}">
+        <product-recommendations
+          id="related-products-{{ section.id }}"
+          class="related-products section-{{ section.id }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.products_to_show }}"
+          data-section-id="{{ section.id }}"
+          data-product-id="{{ product.id }}"
+        >
+          {% if recommendations.performed and recommendations.products_count > 0 %}
+            <ul
+              class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+              role="list"
+            >
+              {% assign skip_card_product_styles = false %}
+              {% for recommendation in recommendations.products %}
+                <li class="grid__item">
+                  {% render 'card-product',
+                    card_product: recommendation,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    image_shape: section.settings.image_shape,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    skip_styles: skip_card_product_styles
+                  %}
+                </li>
+                {%- assign skip_card_product_styles = true -%}
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </product-recommendations>
+      </product-relate>
+      <product-viewed
+        id="viewed-products-{{ section.id }}"
+        class="hidden"
+        data-product-id="{{ product.id }}"
+        data-section-id="{{ section.id }}"
+        data-products-to-show-max="{{ section.settings.products_to_show }}"
+      >
+        {% liquid
+          assign products_to_display = search.results_count
+          if search.results_count > section.settings.products_to_show
+            assign products_to_display = section.settings.products_to_show
+          endif
+        %}
+        {%- if search.performed and search.results_count > 0 -%}
+          <div class="viewed-products {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            <ul
+              class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+              role="list"
+            >
+              {% paginate search.results by section.settings.products_to_show %}
+                {% for product in search.results limit: section.settings.products_to_show %}
+                  <li
+                    id="Slide-{{ section.id }}-{{ forloop.index }}"
+                    class="grid__item"
+                    {% if settings.animations_reveal_on_scroll %}
+                      data-cascade
+                      style="--animation-order: {{ forloop.index }};"
+                    {% endif %}
+                  >
+                    {% render 'card-product',
+                      card_product: product,
+                      media_aspect_ratio: section.settings.image_ratio,
+                      image_shape: section.settings.image_shape,
+                      lazy_load: lazy_load,
+                      show_secondary_image: section.settings.show_secondary_image,
+                      show_vendor: section.settings.show_vendor,
+                      show_rating: section.settings.show_rating,
+                      skip_styles: skip_card_product_styles,
+                      section_id: section.id,
+                      quick_add: section.settings.quick_add
+                    %}
+                  </li>
+                  {%- assign skip_card_product_styles = true -%}
+                {% endfor %}
+              {% endpaginate %}
+            </ul>
+          </div>
+        {%- endif -%}
+      </product-viewed>
+    </product-suggest-viewed>
+  </div>
+</div>
+<script src="{{ 'section-product-recommendation.js' | asset_url }}" defer></script>
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Product Recommendations",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "related_label",
+      "default": "Related Products",
+      "label": "Related products tab label"
+    },
+    {
+      "type": "text",
+      "id": "viewed_label",
+      "default": "Viewed Products",
+      "label": "Viewed products tab label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_type_selector",
+      "default": true,
+      "label": "Show type selector (Related / Recently Viewed)"
+    },
+    {
+      "type": "select",
+      "id": "layout_type",
+      "label": "Layout type",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "carousel", "label": "Carousel" }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4,
+      "label": "Quantity of products to show"
+    },
+    {
+      "type": "select",
+      "id": "image_shape",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:sections.all.image_shape.options__1.label"
+        },
+        {
+          "value": "arch",
+          "label": "t:sections.all.image_shape.options__2.label"
+        },
+        {
+          "value": "blob",
+          "label": "t:sections.all.image_shape.options__3.label"
+        },
+        {
+          "value": "chevronleft",
+          "label": "t:sections.all.image_shape.options__4.label"
+        },
+        {
+          "value": "chevronright",
+          "label": "t:sections.all.image_shape.options__5.label"
+        },
+        {
+          "value": "diamond",
+          "label": "t:sections.all.image_shape.options__6.label"
+        },
+        {
+          "value": "parallelogram",
+          "label": "t:sections.all.image_shape.options__7.label"
+        },
+        {
+          "value": "round",
+          "label": "t:sections.all.image_shape.options__8.label"
+        }
+      ],
+      "default": "default",
+      "label": "t:sections.all.image_shape.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Recommendations"
+    }
+  ],
+  "templates": ["product"]
+}
+{% endschema %}
+{% stylesheet %}
+  .product-recommendations {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  /* Tabs */
+  /* .product-recommendations__tabs { ... }
+.tab-button { ... }
+.tab-button.active { ... } */
+
+  /* Carousel */
+  /* .product-recommendations__carousel { ... }
+.carousel-track { ... }
+.carousel-nav { ... } */
+
+  /* Responsive */
+  /* @media screen and (max-width: 989px) { ... }
+@media screen and (max-width: 749px) { ... } */
+{% endstylesheet %}
+{% javascript %}
+{% endjavascript %}

@@ -82,10 +82,10 @@
         "padding_bottom": 12
       }
     },
-    "related-products": {
-      "type": "related-products",
+    "recommendations-product": {
+      "type": "product-recommendations",
       "settings": {
-        "heading": "You may also like",
+        "heading": "Recommended for you",
         "heading_size": "h2",
         "products_to_show": 4,
         "columns_desktop": 4,
@@ -100,9 +100,10 @@
         "padding_bottom": 28
       }
     }
+
   },
   "order": [
     "main",
-    "related-products"
+    "recommendations-product"
   ]
 }
