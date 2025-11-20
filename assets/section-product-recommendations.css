@@ -1,0 +1,53 @@
+.layout-grid .grid {
+  flex-wrap: wrap;
+}
+
+.layout-grid .slider-button {
+  display: none;
+}
+
+.layout-carousel .grid {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.carousel-system__button-wrap-prev {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  z-index: 2;
+}
+
+.carousel-system__button-wrap-next {
+  position: absolute;
+  top: 25%;
+  right: 0;
+  z-index: 2;
+}
+
+.tab-button {
+  color: #181818;
+  background-color: #fff;
+  padding: 8px 16px;
+  border: 1px solid #181818;
+  cursor: pointer;
+}
+
+.tab-button.active {
+  color: #fff;
+  background-color: #181818;
+}
+
+.svg-wrapper {
+  width: 44px;
+  height: 44px;
+  color: #fff;
+}
+
+@media only screen and (min-width: 990px) {
+  .carousel-system__button-wrap-prev,
+  .carousel-system__button-wrap-next   {
+    top: calc(var(--image-height) / 2);
+  }
+  
+}

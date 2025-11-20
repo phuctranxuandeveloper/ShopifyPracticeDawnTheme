@@ -138,20 +138,23 @@ if (!customElements.get("product-viewed")) {
           this.section
         }&type=product&q=${encodeURIComponent(query)}`;
         try {
-            
           const response = await fetch(searchUrl);
           const text = await response.text();
-          const html = document.createElement('div');
+          const html = document.createElement("div");
           html.innerHTML = text;
-          const newContent = html.querySelector(`#viewed-products-${this.section}`);
+          const newContent = html.querySelector(
+            `#viewed-products-${this.section}`
+          );
 
           if (newContent?.innerHTML.trim().length) {
             this.innerHTML = newContent.innerHTML;
-            this.classList.remove('hidden');
+            this.classList.remove("hidden");
           } else {
-            const suggestProductsContent = html.querySelector(`#suggest-products-${this.section}`);
+            const suggestProductsContent = html.querySelector(
+              `#suggest-products-${this.section}`
+            );
             this.innerHTML = suggestProductsContent.innerHTML;
-            this.classList.remove('hidden');
+            this.classList.remove("hidden");
           }
           this.loaded = true;
         } catch (e) {
@@ -161,3 +164,21 @@ if (!customElements.get("product-viewed")) {
     }
   );
 }
+
+const updateButtonPosition = () => {
+  const cards = document.querySelectorAll(".item-recommendation");
+  const blockRecommendation = document.querySelector(".product-recommendations");
+  if (!cards.length || !blockRecommendation) return;
+  cards.forEach((card) => {
+    const image = card.querySelector("img");
+    const imageHeight = image.offsetHeight;
+    blockRecommendation.style.setProperty("--image-height", `${imageHeight}px`);
+  });
+};
+window.addEventListener("load", updateButtonPosition);
+window.addEventListener("resize", updateButtonPosition);
+
+const images = document.querySelectorAll(".item-recommendation img");
+images.forEach((img) => {
+  img.addEventListener("load", updateCarouselButtonPosition);
+});
