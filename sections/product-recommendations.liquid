@@ -258,6 +258,10 @@
               {%- endif %}
             </slider-component>
           </div>
+        {% else %}
+          <p class="no-viewed-products-message caption">
+            {{ section.settings.no_viewed_products }}
+          </p>  
         {%- endif -%}
       </product-viewed>
     </product-suggest-viewed>
@@ -377,7 +381,13 @@
       "step": 1,
       "default": 4,
       "label": "Quantity of columns on desktop"
-    }
+    },
+    {
+      "type": "text",
+      "id": "no_viewed_products",
+      "default": "You have not viewed any products yet.",
+      "label": "No viewed products message"
+    },
   ],
   "enabled_on": {
     "templates": ["product"],
